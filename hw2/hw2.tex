@@ -288,20 +288,14 @@ In this problem, you will code up three different classifiers to classify differ
 \begin{center}
   \includegraphics[width=.5\textwidth]{img_input/credit.png}
 \end{center}
+We've further transformed the raw data on debt to income ratio and credit score so that the default feature vector that you will be working with is defined as such:
+\[\bm{x} = \left[\text{debt\_income\_ratio} \cdot \frac{200}{7}-7.5, \frac{\text{credit\_score}-500}{140}+0.5\right]^\top\]
 
-Please implement the following classifiers in the \verb|SoftmaxRegression| and \verb|KNNClassifier| classes.
+\noindent Please implement the following classifiers in the \verb|SoftmaxRegression| and \verb|KNNClassifier| classes.
 
-\textbf{For this problem, apply the following transformation to all data:}
-
-$$\phi(\boldx) = \left[x_1 \cdot \frac{200}{7}-7.5, \frac{x_2-500}{140}+0.5\right]^\top$$
-
-  where $x_1$ and $x_2$ represent the values for debt to income ratio and credit score, respectively.
-  
-  This transformation has been applied to the data for you in the notebook.
 
 \begin{enumerate}[label=\alph*)]
 
-  % FDV: Added the two classifiers below based on s22, integrate them into the s23 solution (the rest of this problem is s23) 
   \item \textbf{A generative classifier with Gaussian class-conditional
           densities with a \textit{shared covariance} matrix} across all classes.
         Feel free to re-use your Problem 2 results.
@@ -311,14 +305,13 @@ $$\phi(\boldx) = \left[x_1 \cdot \frac{200}{7}-7.5, \frac{x_2-500}{140}+0.5\righ
         The staff implementation can switch between the two Gaussian generative classifiers with just a
         few lines of code.)
 
-        % FDV: Since they won't have implemented the gradients in Problem 2, can we provide them code for the optimization/otherwise make this part simple?  
-  \item \textbf{A multi-class logistic regression classifier} using the softmax activation function. In your implementation of gradient descent, \textbf{make sure to include a bias term and use L2 regularization} with regularization parameter $\lambda = 0.001$. Limit the number of iterations of gradient descent to 200,000, and set the learning rate to be $\eta = 0.001$.
+  \item \textbf{A multi-class logistic regression classifier} using the softmax activation function. In your implementation of gradient descent, \textbf{make sure to use L2 regularization} with regularization parameter $\lambda = 0.001$. Please also include a bias term, but do not regularize it. Limit the number of iterations of gradient descent to 200,000, and set the learning rate to be $\eta = 0.001$.
 
   \item \textbf{Another multi-class logistic regression classifier} with the additional feature map:
-  $$\phi(\boldx) = [\ln (x_1+10), x_2^2]^\top$$
-  where $x_1$ and $x_2$ represent the values for debt to income ratio and credit score, respectively.
+  $$\phi(\bm x) = [\ln (x_1+10), x_2^2]^\top$$
 
-  \item \textbf{A kNN classifier} in which you classify based on the $k = 1$ and $k = 5$ nearest neighbors and the following distance function: $$dist(loan\_app_1, loan\_app_2) = (debt_1 - debt_2)^2/9 + (credit_1 - credit_2)^2$$
+  \item \textbf{A kNN classifier} in which you classify based on the $k = 1$ and $k = 5$ nearest neighbors and the following distance function: 
+  \[\text{dist}(\boldsymbol{x}, \boldsymbol{x}') = (x_1 - x'_1)^2/9 + (x_2 - x'_2)^2\]
         where nearest neighbors are those with the smallest distances from a given point.
 
         Note 1: When there are more than two labels, no label may have the
