@@ -289,7 +289,7 @@ In this problem, you will code up three different classifiers to classify differ
   \includegraphics[width=.5\textwidth]{img_input/credit.png}
 \end{center}
 We've further transformed the raw data on debt to income ratio and credit score so that the default feature vector that you will be working with is defined as such:
-\[\bm{x} = \left[\text{debt\_income\_ratio} \cdot \frac{200}{7}-7.5, \frac{\text{credit\_score}-500}{140}+0.5\right]^\top\]
+\[\bm{x} = \left[\text{debt\_income\_ratio} \cdot \frac{200}{7}-7.5, \frac{\text{credit\_score}-500}{140}-0.5\right]^\top\]
 
 \noindent Please implement the following classifiers in the \verb|SoftmaxRegression| and \verb|KNNClassifier| classes.
 
