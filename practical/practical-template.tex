@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+
+\usepackage{../common}
+\usepackage{booktabs}
+\title{Practical: Sample Assignment}
+\author{Names \\ Emails}
+\date{}
+\begin{document}
+
+
+\maketitle{}
+
+
+\noindent This is the template you should use for submitting your practical assignment. 
+Your write-up must
+answer all questions under the approaches, results, and discussion subsections
+for each of tasks A, B, and C. \\
+
+\noindent If you used existing packages or referred to papers or blogs for ideas,  you should cite these in your report.  You must have \textit{at least one plot or table}
+for each of the results sections in parts A, B, C
+that details the performances of different methods tried, such as one like table \ref{tab:results}. Credit will be given for quantitatively reporting (with clearly
+labeled and captioned figures and/or tables) on the performance of the
+methods you tried compared to your baselines.\\
+
+\begin{table}
+\centering
+\begin{tabular}{llrrr}
+ \toprule
+ Model &  & Overall Acc (\%) & Class 0 Acc & ... \\
+ \midrule
+ \textsc{Baseline 1} & & 0.45 & 0.60 & ...\\
+ \textsc{Baseline 2} & & 2.59 & 5.00 & ... \\
+ \textsc{Model 1} & & 10.59 & 17.54 & ... \\
+ \textsc{Model 2} & &13.42 & 16.77 & ... \\
+ \textsc{Model 3} & & 7.49 & 9.82 & ... \\
+ \bottomrule
+\end{tabular}
+\caption{\label{tab:results} Result tables can compactly illustrate absolute performance, but a plot may be more effective at illustrating a trend.}
+\end{table}
+
+
+\noindent Note that the limit for the report is 4 pages, please prioritize quality over 
+quantity in your submission.\\
+
+\section{Part A: Feature Engineering, Baseline Models}
+
+\subsection{Approach}
+
+What did you do? When relevant, provide mathematical descriptions or pseudocode. Credit will be given for:
+
+  \begin{itemize}
+  \item Representation: How do the two representations differ? What are potential drawbacks or advantages of each?
+  \item Logistic regression: Describe how the model you trained predicts output probabilities for each class.
+
+  \end{itemize}
+
+\subsection{Results}
+
+This section should report on the following questions: 
+
+\begin{itemize}
+\item  What is the \textbf{overall} and \textbf{per-class} classification accuracy of the models that you implemented?
+\end{itemize}
+
+\subsection{Discussion}
+
+This section should report on the following questions: 
+
+\begin{itemize}
+  \item Why do you hypothesize one feature representation performed better than the other?  
+  \item Do you have an intuition for why these baselines might be performing as well/poorly as they are?
+  \end{itemize}
+
+\section{Part B: More Modeling}
+
+\subsection{First Step}
+
+\subsubsection{Approach}
+
+What did you do? Credit will be given for:
+
+  \begin{itemize}
+  \item Provide mathematical descriptions or pseudocode to help us understand how the models you tried make predictions and are trained.
+  \end{itemize}
+
+\subsubsection{Results}
+This section should report on the following questions: 
+
+\begin{itemize}
+\item  What is the overall and per-class classification accuracy of the models that you implemented?
+\end{itemize}
+
+
+\subsubsection{Discussion}
+Compare your results to the logistic regression models in Part A and discuss what your results imply about the task.
+
+
+\subsection{Hyperparameter Tuning and Validation}
+
+\subsubsection{Approach}
+What did you do? Credit will be given for:
+
+  \begin{itemize}
+  \item Making tuning and configuration decisions using thoughtful experimentation.  
+    How did you perform your hyperparameter search, and what hyperparameters did you search over?
+  \end{itemize}
+
+\subsubsection{Results}
+Present your results of your hyperparameter search in a way that best reflects how to communicate your conclusions.
+
+\subsubsection{Discussion}
+
+Why do you expect the tuned models to perform better than the baseline models and the model used in First Step? Discuss your validation strategy and your conclusions.
+
+\section{Final Write-up and Reflections}
+
+\subsection{Discussion:} 
+
+Include your paragraph reflections on the key components listed in the instructions.
+
+
+\section{Optional Exploration, Part C: Explore some more!}
+\subsection{Approach}
+
+What did you do? Credit will be given for:
+  \begin{itemize}
+  \item Diving deeply into all of the model classes and/or pre-processing algorithms that you tried (rather than just trying off-the-shelf tools with default settings).  When relevant, provide mathematical descriptions or pseudocode to help us understand how the models you tried make predictions and are trained. 
+  \end{itemize}
+  
+
+\subsection{Results}
+
+Describe your results in a way that is appropriate for the experiments that you ran.
+
+\subsection{Discussion}
+Credit will be given for:
+
+  \begin{itemize}
+  \item Explaining the your reasoning for why you sequentially chose to
+    try the approaches you did (i.e. what was it about your initial
+    approach that made you try the next change?).  
+  \item Explaining the results.  Did the adaptations you tried improve
+    the results?  \textbf{Why or why not?}  Did you do additional tests to
+    determine if your reasoning was correct?  
+  \end{itemize}
+ 
+
+\end{document}
