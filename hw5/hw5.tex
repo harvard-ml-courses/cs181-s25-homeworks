@@ -1,0 +1,395 @@
+\documentclass[submit]{../harvardml}
+ 
+\course{CS1810-S25}
+\assignment{Homework \#5}
+\duedate{April 18, 2025 at 11:59 PM}
+
+\newcommand{\attr}[1]{\textsf{#1}}
+\usepackage[OT1]{fontenc}
+\usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{subfig}
+\usepackage{framed}
+\usepackage{fullpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{todonotes}
+\usepackage{listings}
+\usepackage{../common}
+\usepackage{bm}
+\usepackage{tikz}
+\usepackage{pythonhighlight}
+\usepackage[mmddyyyy,hhmmss]{datetime}
+\usetikzlibrary{positioning,shapes,arrows}
+
+\definecolor{verbgray}{gray}{0.9}
+
+\lstnewenvironment{csv}{
+  \lstset{backgroundcolor=\color{verbgray},
+  frame=single,
+  framerule=0pt,
+  basicstyle=\ttfamily,
+  columns=fullflexible}}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Solution environment
+\newenvironment{solution}
+  {\color{blue}\section*{Solution}}
+{}
+% \excludecomment{solution} % UNCOMMENT TO HIDE SOLUTIONS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\begin{document}
+
+\begin{center}
+{\Large Mixtures, EM, and Graphical Models}\\
+\end{center}
+
+
+
+
+\subsection*{Introduction}
+
+This homework assignment will have you work with EM for mixtures, PCA, and graphical models.
+
+\subsection*{Resources and Submission Instructions}
+
+We encourage you to read sections 9.4 and 8.2.5 of the course textbook.
+
+Please type your solutions after the corresponding problems using this \LaTeX\ template, and start each problem on a new page.
+
+Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to assign pages for each question.  \textbf{You must include any plots in your writeup PDF. }. Please submit your \LaTeX file and code files to the Gradescope assignment `HW5 - Supplemental.' The supplemental files will only be checked in special cases, e.g. honor code issues, etc. Your files should be named in the same way as we provide them in the repository, e.g. \texttt{hw5.pdf}, etc.
+
+
+
+\begin{problem}[Expectation-Maximization for Gamma Mixture Models: Derivations, 10pts]
+  In this problem we will explore expectation-maximization for a Categorical-Gamma Mixture model. \\
+
+  \noindent Let us suppose the following generative story for an observation $x$: first one of $K$ classes is randomly selected, and then the features $x$ are sampled according to this class. If $$z \sim \operatorname{Categorical}(\btheta)$$ indicates the selected class, then $x$ is sampled according to the class or ``component'' distribution corresponding to $z$. (Here, $\btheta$ is the mixing proportion over the $K$ components: $\sum_k \theta_k = 1$ and $ \theta_k > 0$.) In this problem, we assume these component distributions are gamma distributions with shared shape parameter but different rate parameters: 
+  $$ x | z \sim \operatorname{Gamma}(\alpha, \beta_k). $$
+  In an unsupervised setting, we are only given a set of observables as our training dataset: $\mathcal D = \{x^{(n)}\}_{n=1}^N$. The EM algorithm allows us to learn the underlying generative process (the parameters $\btheta$ and $\{\beta_k\}$) despite not having the latent variables $\{z^{(n)}\}$ corresponding to our training data.
+
+  \vspace{1em}
+
+  \begin{enumerate}
+    \item \textbf{Intractability of the Data Likelihood.} We are
+    generally interested in finding a set of parameters $\beta_k$ that
+    maximizes the likelihood of the observed data: $$\log
+    p(\{x^{(n)}\}^N_{n=1}; \btheta, \{\beta_k\}^K_{k = 1}).$$ Expand the data
+    likelihood to include the necessary sums over observations
+    $x^{(n)}$ and to marginalize out the latents
+    $\boldz^{(n)}$. Why is optimizing this likelihood directly
+    intractable?
+
+    \item \textbf{Complete Data Log Likelihood.} The complete dataset
+    $\mathcal D = \{(x^{(n)}, \boldz^{(n)})\}_{n=1}^N$ includes latents $\boldz^{(n)}$. Write
+    out the negative complete data log likelihood: $$\mcL(\btheta, \{\beta_k\}^K_{k=1}) =  -\log p(\mathcal D; \btheta, \{\beta_k\}^K_{k=1}).$$
+
+    Apply the power trick and simplify your expression using indicator elements $z^{(n)}_
+    k$.\footnote{The ``power trick'' is used when terms in a PDF are raised to the power of indicator components of a one-hot vector.  For example, it allows us to rewrite $p(\boldz^{(n)} ;  \btheta) = \prod_k \theta_k^{z^{(n)}_k}$.} Notice that optimizing this loss is now computationally tractable if we know $\boldz^{(n)}$.
+
+    \item[3.] \textbf{Expectation Step.} Our next step is to introduce a
+    mathematical expression for $\boldq^{(n)}$, the posterior over the
+    hidden component variables~$\boldz^{(n)}$ conditioned on the observed data $x^{(n)}$ with fixed parameters. That is:
+    \begin{align*}
+      \textbf{q}^{(n)} &= \begin{bmatrix}
+        p(\boldz^{(n)} =\boldC_1| x^{(n)}; \btheta, \{ \beta_k \}^K_{k=1}) \\
+        \vdots \\
+        p(\boldz^{(n)} =\boldC_K| x^{(n)}; \btheta, \{ \beta_k \}^K_{k=1})
+      \end{bmatrix}.
+    \end{align*}
+    Write down and simplify the expression for $\boldq^{(n)}$.  Note that because the $\boldq^{(n)}$ represents the posterior over the hidden categorical variables $\boldz^{(n)}$, the components of vector $\boldq^{(n)}$ must sum to 1.
+    The main work is to find an expression for $p(\boldz^{(n)}|x^{(n)}; \btheta, \{\beta_k\}^K_{k=1})$  for any choice of $\boldz^{(n)}$; i.e., for any 1-hot encoded $\boldz^{(n)}$. With this, you can then construct the different components that make up the vector $\boldq^{(n)}$.
+  \end{enumerate}
+\end{problem}
+
+\newpage
+
+\begin{framed}
+  \noindent\textbf{Problem 1} (cont.)\\
+  \begin{enumerate}
+    \item[4.] \textbf{Maximization Step.}
+    Using the~$\boldq^{(n)}$ estimates from the Expectation Step, derive an update for maximizing the expected complete data log likelihood in terms of $\btheta$ and $\{ \beta_k \}^K_{k=1}$.
+
+    \begin{enumerate}
+      \item Derive an expression for the expected complete data log likelihood using $\boldq^{(n)}$.
+      \item Find an expression for $\btheta$ that maximizes this expected complete data log likelihood. You may find it helpful to use Lagrange multipliers in order to enforce the constraint $\sum \theta_k = 1$. Why does this optimal $\btheta$ make intuitive sense?
+      \item Find an expression for $\beta_k$ that maximizes the expected complete data log likelihood.  Why does this optimal $\beta_k$  make intuitive sense?
+    \end{enumerate}
+      
+    \item[5.] Suppose that this had been a classification problem. That is,
+    you were provided the ``true'' components $\boldz^{(n)}$ for each
+    observation $x^{(n)}$,
+    and you were going to perform the classification by
+    inverting the provided generative model (i.e. now you're predicting $\boldz^{(n)}$ given $x^{(n)}$). Could you reuse any of
+    your derivations above to estimate the parameters of the model?
+  \end{enumerate}
+\end{framed}
+
+
+
+\begin{solution}
+	Your solution here.
+\end{solution}
+
+\newpage
+
+
+
+
+
+\begin{problem}[Expectation-Maximization for Gamma Mixture Models: Coding, 15 pts]
+  In this problem, you will implement your EM derivations from Problem
+  1 and apply it to analyzing a synthetic example of the recovery time
+  for patients following a surgical procedure, in hours.  The doctors
+  have noticed that some patients seem to recover at an expected rate,
+  but sometimes the recovery takes a long time.  They are keen to
+  understand what is going on to improve their processes.  
+  
+  \begin{enumerate}
+    % FDV: Make sure they are reading from a data file so that they don't know what the true clusters, etc. are 
+    \item Plot the data.  How would you describe the distribution?
+    Based on what you see, why might a mixture model be an appropriate
+    model?  
+      
+    \item Implement your solution from Problem 1 in \texttt{homework5.ipynb}. You do not need to include your code in your writeup.
+
+    Note that for numerical stability, we recommend using the 
+    log-probability directly; for example, you could use the \texttt{Gamma} class from \texttt{torch.distributions} and then use the \texttt{log\_prob} and \texttt{logsumexp} methods.
+    % {\bfseries You will recieve no points for code not included below.}
+
+    % FDV: All the below is new and needs code and solutions and refinement 
+    \item Run your code for 1, 2, 3, and 4 mixture components.  Plot the
+    mixture models you find on top of the data distribution as well as
+    the associated log likelihoods.  How many mixtures does it seem that
+    there are?  How would you decide?
+  
+    \item The doctors tell you that a normal recovery from the procedure
+    is about 2-3 days, though sometimes patients recover a little
+    faster.  Does this match what you see in the data?  Provide some
+    hypotheses about what might be going on.
+
+    \item It's clear from the data that some patients take significantly
+    longer than 2-3 days.  Do you observe that there is evidence that
+    these represent a different cluster, vs. a long tail from a single
+    cluster?  Why or why not?
+
+    \item The physician-scientists want to use this model to understand
+    the characteristics of patients who have very long recoveries
+    vs. those who do not.  Is this mixture modeling approach appropriate
+    for this task?  Why or why not?
+
+    \item The physician-scientists develop a way of identifying someone's
+    cluster based on a blood test---it seems that some patients in the
+    longer group are ones that are at risk for clotting-related
+    complications.  The hospital operations staff want to use this model
+    to help streamline operations.  They plan to use the cluster of the
+    patient to predict which patients will have a long length of stay.
+    Is this plan sound?  May there be some issues?
+  \end{enumerate} 
+\end{problem} 
+
+\begin{solution}
+	Your solution here.
+\end{solution}
+
+\newpage
+
+
+
+
+\begin{problem}[PCA, 15 pts]
+  % FDV: Here are the notes from last year.  I've already edited to make clear we want L2.  As noted below, we should also provide the baseline/reference to the pset 4 solutions in case they computed that wrong somehow.  
+  
+  % # problem 2 clarifications
+  % *NB: There was a lot of confusion about this problem, and we ended up accepting any form of comparison to PCA. Next year should clarify which norm students should use more explicitly (and maybe provide a baseline for students if the computation of the reconstruction error is different from what students calculated on pset4.)*
+
+  % For Problem 2.3 (computing PCA reconstruction error), we will accept both the L1 and L2 norm and both summing over the errors for individual images and taking the mean of the errors (as long as you compute the error for K-Means the same way as you compute it for PCA). Apologies for the ambiguity in this question! 
+
+  For this problem you will implement PCA from scratch on the first 6000 images of the MNIST dataset. Your job is to apply PCA on MNIST and discuss what kind of structure is found. Implement your solution in \texttt{homework5.ipynb} and attach the final plots below. \\
+
+  \noindent {\bfseries You will receive no points for code not included below or for using third-party PCA implementations (i.e. {\normalfont \texttt{scikit-learn}}).}
+  \begin{enumerate}
+
+    \item Compute the PCA. Plot the eigenvalues corresponding to the most
+    significant 500 components in order from most significant to
+    least. Make another plot that describes the cumulative proportion of
+    variance explained by the first $k$ most significant components for
+    values of $k$ from 1 through 500.  How much variance is explained by
+    the first 500 components?  Describe how the cumulative proportion of
+    variance explained changes with $k$.  Include this plot below.
+
+    \item Plot the mean image of the dataset and plot an image
+    corresponding to each of the first 10 principle components.  How do
+    the principle component images compare to the cluster centers from
+    K-means? Discuss any similarities and differences.  Include these
+    two plots below.
+    
+    \textit{Reminder: Center the data before performing PCA.}
+
+    \item Compute the reconstruction error on the data set using the mean
+    image of the dataset.  Then compute the reconstruction error using
+    the first 10 principal components.  How do these errors compare to
+    the final objective loss achieved by using K-means on the dataset?
+    Discuss any similarities and differences.
+
+    For consistency in grading, define the reconstruction error as the squared L2
+    norm averaged over all data points.
+
+    % FDV: Added this part: Solution should be that it does not change the
+    % reconstruction error (if before X approx W*U, it becomes W*R^-1*R*U)
+    % and that while still orthogonal, it may no longer align with the
+    % ordered directions of most variance.  Note: we can ask why or why
+    % not, or say "Why doesn't this change the reconstruction error?  What
+    % parts of the interpretation of the principle components change, and
+    % what stays the same?"
+  
+    \item Suppose you took the original matrix of principle components
+    that you found $V$ and multiplied it on the right side by some rotation matrix $R$ (i.e., you considered the matrix $VR$).
+    Would that change the quality of the reconstruction error in the
+    last problem?  The interpretation of the components?  Why or why
+    not?
+
+    % FDV: A new question 
+    \item Let's recall the zipcode application in Homework 3.  A common
+    application of PCA is to dimensionality reduction before running a
+    classifier: You first project the data onto the first few PCA bases,
+    and then you train a classifier from the projection to the output.
+    \begin{enumerate}
+      \item First, how might this be advantageous to just applying the classification algorithm directly, from both a robustness and efficiency perspective? 
+      
+      \item Second, recall from Homework 3 that adversaries can attack a classification algorithm by manipulating/perturbing the data; how could this approach help with such attacks?
+    \end{enumerate}
+    % FDV: Denoising may make it harder for adversaries  
+
+    % FDV: A new question 
+    \item You are collaborating with a penmanship analysis expert.  They
+    are able to identify the kind of pen used to make a mark by various
+    characteristics such as the width of the line, its crispness, and
+    the type (if any) of ink splatter.  They have heard that your
+    machine learning helped automate reading zip codes for the post
+    office; they are wondering if you can help automate the manual
+    process of classifying pen types.
+    \begin{enumerate}
+
+      \item Does what the expert is describing correspond to some kind
+      of hidden representation or latent variable?  Describe why or
+      why not.
+      % FDV: yes! examples above are continuous latents 
+      
+      \item Do you think PCA will help the expert?  Why or why not?
+      % FDV: Sometimes you care about the lower order bits!  Or at least middle ones!   
+    \end{enumerate}
+  \end{enumerate}
+\end{problem}
+
+\newpage
+
+\begin{solution}
+	Your solution here.
+\end{solution}
+
+
+
+
+
+
+\begin{problem}[Bayesian Networks, 10 pts]
+  In this problem we explore the conditional independence
+  properties of a Bayesian Network.  Consider the following Bayesian
+  network representing a fictitious person's activities. Each random
+  variable is binary (true/false).
+
+  \begin{center}
+    \begin{tikzpicture}[
+      node distance=1cm and .5cm,
+      bn/.style={draw,ellipse,text width=2cm,align=center}
+        ]
+      \node[bn] (w) {\attr{Weekend}};
+      \node[bn,below right=of w] (t) {\attr{Traveling}};
+      \node[bn,right=of t] (s) {\attr{Sick}};
+      \node[bn,below left=of w] (f) {\attr{Friends over}};
+      \node[bn,below right=of f] (eef) {\attr{Eat exotic foods}};
+      \node[bn,right=of eef] (gs) {\attr{Get sleep}};
+      \path (w) edge[-latex] (t)
+      (w) edge[-latex] (f)
+      (f) edge[-latex] (eef)
+      (t) edge[-latex] (eef)
+      (t) edge[-latex] (gs)
+      (s) edge[-latex] (gs)
+      (s) edge[-latex] (eef);
+    \end{tikzpicture}
+  \end{center}
+
+  The random variables are:
+
+  \begin{itemize}
+  \item \attr{Weekend}: Is it the weekend?
+  \item \attr{Friends over}: Does the person have friends over?
+  \item \attr{Traveling}: Is the person traveling?
+  \item \attr{Sick}: Is the person sick?
+  \item \attr{Eat exotic foods}: Is the person eating exotic foods?
+  \item \attr{Get Sleep}: Is the person getting sleep?
+  \end{itemize}
+
+  \medskip
+
+  \noindent For the following questions, $A \perp B$ means that events A and B are independent and $A \perp B\mid C$ means that events A and B are independent conditioned on C. \\
+
+  \noindent \textbf{Use the concept of d-separation} to answer the
+  questions and show your work (i.e., state what the blocking path(s) is/are and what nodes block the path; or explain why each path is not blocked). For example, consider the following question and answer:
+  \begin{itemize}
+    \item[-] \textit{Example Question:} Is $\attr{Friends over} \perp \attr{Traveling}$? If NO, give intuition for why.
+  
+    \item[-] \textit{Example Answer:} NO. The path from Friends over -- Weekend -- Traveling is not blocked following the d-separation rules as we do not observe Weekend. Thus, the two are not independent. 
+  \end{itemize}
+
+  \noindent \textbf{Actual Questions:}
+
+  \begin{enumerate}
+    \item Is $\attr{Weekend} \perp \attr{Get Sleep}$?
+      If NO, give intuition for why.
+
+    \item Is $\attr{Sick} \perp \attr{Weekend}$?
+      If NO, give intuition for why.
+
+    \item Is $\attr{Sick} \perp \attr{Friends over}\given \attr{Eat exotic
+      foods}$? If NO, give intuition for why.
+
+    \item Is $\attr{Friends over} \perp \attr{Get Sleep}$? If NO, give
+      intuition for why.
+
+    \item Is $\attr{Friends over} \perp \attr{Get Sleep} \given
+      \attr{Traveling}$? If NO, give intuition for why.
+
+    \item Suppose the person stops traveling in ways that affect their
+      sleep patterns.  Travel still
+      affects whether they eat exotic foods.  Draw the modified network. (Feel free to reference the handout file for the commands for displaying the new network in \LaTeX).
+
+    \item For this modified network, is $\attr{Friends over} \perp
+      \attr{Get Sleep}$? If NO, give an intuition why.  If YES,
+      describe what observations (if any) would cause them to no longer be
+      independent.
+  \end{enumerate}
+\end{problem}
+
+\begin{solution}
+	Your solution here.
+\end{solution}
+
+\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Name and Calibration
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection*{Name}
+
+\subsection*{Collaborators and Resources}
+Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
+
+\end{document}
