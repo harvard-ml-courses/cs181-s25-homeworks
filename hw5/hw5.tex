@@ -1,4 +1,5 @@
 \documentclass[submit]{../harvardml}
+\usepackage{../common}
  
 \course{CS1810-S25}
 \assignment{Homework \#5}
@@ -7,8 +8,8 @@
 \newcommand{\attr}[1]{\textsf{#1}}
 \usepackage[OT1]{fontenc}
 \usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
-\usepackage[pdftex]{graphicx}
-\usepackage{subfig}
+\usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage{framed}
 \usepackage{fullpage}
 \usepackage{amsmath}
@@ -16,7 +17,6 @@
 \usepackage{color}
 \usepackage{todonotes}
 \usepackage{listings}
-\usepackage{../common}
 \usepackage{bm}
 \usepackage{tikz}
 \usepackage{pythonhighlight}
@@ -32,15 +32,14 @@
   basicstyle=\ttfamily,
   columns=fullflexible}}{}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Solution environment
-\newenvironment{solution}
-  {\color{blue}\section*{Solution}}
-{}
-% \excludecomment{solution} % UNCOMMENT TO HIDE SOLUTIONS
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+\usepackage{xcolor}
+\newenvironment{solution}{
+    \vspace{2mm}
+    \color{blue}\noindent\textbf{Solution}:
+}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \begin{document}
@@ -48,7 +47,6 @@
 \begin{center}
 {\Large Mixtures, EM, and Graphical Models}\\
 \end{center}
-
 
 
 
@@ -151,7 +149,6 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
   understand what is going on to improve their processes.  
   
   \begin{enumerate}
-    % FDV: Make sure they are reading from a data file so that they don't know what the true clusters, etc. are 
     \item Plot the data.  How would you describe the distribution?
     Based on what you see, why might a mixture model be an appropriate
     model?  
@@ -160,9 +157,7 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
 
     Note that for numerical stability, we recommend using the 
     log-probability directly; for example, you could use the \texttt{Gamma} class from \texttt{torch.distributions} and then use the \texttt{log\_prob} and \texttt{logsumexp} methods.
-    % {\bfseries You will recieve no points for code not included below.}
 
-    % FDV: All the below is new and needs code and solutions and refinement 
     \item Run your code for 1, 2, 3, and 4 mixture components.  Plot the
     mixture models you find on top of the data distribution as well as
     the associated log likelihoods.  How many mixtures does it seem that
@@ -203,12 +198,6 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
 
 
 \begin{problem}[PCA, 15 pts]
-  % FDV: Here are the notes from last year.  I've already edited to make clear we want L2.  As noted below, we should also provide the baseline/reference to the pset 4 solutions in case they computed that wrong somehow.  
-  
-  % # problem 2 clarifications
-  % *NB: There was a lot of confusion about this problem, and we ended up accepting any form of comparison to PCA. Next year should clarify which norm students should use more explicitly (and maybe provide a baseline for students if the computation of the reconstruction error is different from what students calculated on pset4.)*
-
-  % For Problem 2.3 (computing PCA reconstruction error), we will accept both the L1 and L2 norm and both summing over the errors for individual images and taking the mean of the errors (as long as you compute the error for K-Means the same way as you compute it for PCA). Apologies for the ambiguity in this question! 
 
   For this problem you will implement PCA from scratch on the first 6000 images of the MNIST dataset. Your job is to apply PCA on MNIST and discuss what kind of structure is found. Implement your solution in \texttt{homework5.ipynb} and attach the final plots below. \\
 
@@ -231,22 +220,13 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
     
     \textit{Reminder: Center the data before performing PCA.}
 
-    \item Compute the reconstruction error on the data set using the mean
-    image of the dataset.  Then compute the reconstruction error using
-    the first 10 principal components.  How do these errors compare to
+    \item Compute the reconstruction error on the dataset using the first 10 principal components. Then compute the reconstruction error when the reconstruction for each point is just the mean
+    image of the dataset. How do these errors compare to
     the final objective loss achieved by using K-means on the dataset?
     Discuss any similarities and differences.
 
-    For consistency in grading, define the reconstruction error as the squared L2
-    norm averaged over all data points.
-
-    % FDV: Added this part: Solution should be that it does not change the
-    % reconstruction error (if before X approx W*U, it becomes W*R^-1*R*U)
-    % and that while still orthogonal, it may no longer align with the
-    % ordered directions of most variance.  Note: we can ask why or why
-    % not, or say "Why doesn't this change the reconstruction error?  What
-    % parts of the interpretation of the principle components change, and
-    % what stays the same?"
+    For consistency in grading, define the error function as the squared L2
+    norm of the difference between the true data and the reconstruction, averaged over all data points.
   
     \item Suppose you took the original matrix of principle components
     that you found $V$ and multiplied it on the right side by some rotation matrix $R$ (i.e., you considered the matrix $VR$).
@@ -254,7 +234,6 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
     last problem?  The interpretation of the components?  Why or why
     not?
 
-    % FDV: A new question 
     \item Let's recall the zipcode application in Homework 3.  A common
     application of PCA is to dimensionality reduction before running a
     classifier: You first project the data onto the first few PCA bases,
@@ -264,9 +243,7 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
       
       \item Second, recall from Homework 3 that adversaries can attack a classification algorithm by manipulating/perturbing the data; how could this approach help with such attacks?
     \end{enumerate}
-    % FDV: Denoising may make it harder for adversaries  
 
-    % FDV: A new question 
     \item You are collaborating with a penmanship analysis expert.  They
     are able to identify the kind of pen used to make a mark by various
     characteristics such as the width of the line, its crispness, and
@@ -279,10 +256,8 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
       \item Does what the expert is describing correspond to some kind
       of hidden representation or latent variable?  Describe why or
       why not.
-      % FDV: yes! examples above are continuous latents 
       
       \item Do you think PCA will help the expert?  Why or why not?
-      % FDV: Sometimes you care about the lower order bits!  Or at least middle ones!   
     \end{enumerate}
   \end{enumerate}
 \end{problem}
@@ -382,14 +357,12 @@ Please submit the writeup PDF to the Gradescope assignment `HW5'. Remember to as
 \end{solution}
 
 \newpage
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Name and Calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection*{Name}
 
-\subsection*{Collaborators and Resources}
-Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
+\textbf{Name}:
+
+\textbf{Collaborators and Resources}: 
 
 \end{document}
