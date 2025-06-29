@@ -1,9 +1,9 @@
 \documentclass[submit]{../harvardml}
-
+\usepackage{../common}
 
 \course{CS1810-S25}
-\assignment{Assignment \#1}
-\duedate{11:59pm ET, February 14, 2025} 
+\assignment{Homework \#1}
+\duedate{February 14, 2025 at 11:59 PM}
 
 \usepackage[OT1]{fontenc}
 \usepackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
@@ -16,11 +16,11 @@
 \usepackage{color}
 \usepackage{todonotes}
 \usepackage{listings}
-\usepackage{../common}
 \usepackage{framed}
 \usepackage{float}
 \usepackage{ifthen}
 \usepackage{bm}
+
 
 \usepackage[mmddyyyy,hhmmss]{datetime}
 
@@ -35,25 +35,24 @@
 
  \DeclareMathOperator*{\limover}{\overline{lim}}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Solution environment
 \usepackage{xcolor}
-\usepackage{comment}
-\newenvironment{solution}
-  {\color{blue}\section*{Solution}}
-{}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+\newenvironment{solution}{
+    \vspace{2mm}
+    \color{blue}\noindent\textbf{Solution}:
+}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
 \begin{center}
-  {\Large Homework 1: Regression}\\
+  {\Large Regression}
 \end{center}
 
 \subsection*{Introduction}
+
 This homework is on different three different forms of regression:
-kernelized regression, nearest neighbors regression, and linear
+nearest neighbors regression, kernelized regression, and linear
 regression.  We will discuss implementation and examine their
 tradeoffs by implementing them on the same dataset, which consists of
 temperature over the past 800,000 years taken from ice core samples.
@@ -101,39 +100,14 @@ for you in the provided notebook.
 
 
 \subsection*{Resources and Submission Instructions}
-If you find that you are having trouble with the first couple
-problems, we recommend going over the fundamentals of linear algebra
-and matrix calculus (see links on website).  The relevant parts of the
-\href{https://github.com/harvard-ml-courses/cs181-textbook/blob/master/Textbook.pdf}{cs181-textbook
-  notes are Sections 2.1 - 2.7}.  We strongly recommend reading the
-textbook before beginning the homework.
+If you find that you are having trouble with the first couple problems, we recommend going over the fundamentals of linear algebra and matrix calculus (see links on website).  The relevant parts of the \href{https://github.com/harvard-ml-courses/cs181-textbook/blob/master/Textbook.pdf}{cs181-textbook notes are Sections 2.1 - 2.7}.  We strongly recommend reading the textbook before beginning the homework.
 
 We also encourage you to first read the
-\href{http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop\%20-\%20Pattern\%20Recognition\%20And\%20Machine\%20Learning\%20-\%20Springer\%20\%202006.pdf}{Bishop
-  textbook}, particularly: Section 2.3 (Properties of Gaussian
-Distributions), Section 3.1 (Linear Basis Regression), and Section 3.3
-(Bayesian Linear Regression). (Note that our notation is slightly
-different but the underlying mathematics remains the same!).
+\href{http://users.isr.ist.utl.pt/~wurmd/Livros/school/Bishop\%20-\%20Pattern\%20Recognition\%20And\%20Machine\%20Learning\%20-\%20Springer\%20\%202006.pdf}{Bishop textbook}, particularly: Section 2.3 (Properties of Gaussian Distributions), Section 3.1 (Linear Basis Regression), and Section 3.3 (Bayesian Linear Regression). (Note that our notation is slightly different but the underlying mathematics remains the same!).
 
-\textbf{Please type your solutions after the corresponding problems
-  using this \LaTeX\ template, and start each problem on a new page.}
-You may find the following introductory resources on \LaTeX\ useful:
-\href{http://www.mjdenny.com/workshops/LaTeX_Intro.pdf}{\LaTeX\ Basics}
-and
-\href{https://www.overleaf.com/learn/latex/Free_online_introduction_to_LaTeX_(part_1)}{\LaTeX\ tutorial
-  with exercises in Overleaf}
+Please type your solutions after the corresponding problems using this \LaTeX\ template, and start each problem on a new page.
 
-Homeworks will be submitted through Gradescope. You will be added to
-the course Gradescope once you join the course Canvas page. If you
-haven't received an invitation, contact the course staff through Ed.
-
-\textbf{Please submit the writeup PDF to the Gradescope assignment
-  `HW1'.} Remember to assign pages for each question.
-
-\textbf{Please submit your \LaTeX file and code files to the
-  Gradescope assignment `HW1 - Supplemental'.} Your files should be
-named in the same way as we provide them in the repository,
-e.g. \texttt{hw1.pdf}, etc.
+Please submit the writeup PDF to the Gradescope assignment `HW1'. Remember to assign pages for each question.  \textbf{You must include any plots in your writeup PDF. }. Please submit your \LaTeX file and code files to the Gradescope assignment `HW1 - Supplemental.' The supplemental files will only be checked in special cases, e.g. honor code issues, etc. Your files should be named in the same way as we provide them in the repository, e.g. \texttt{hw1.pdf}, etc.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 1
@@ -157,7 +131,7 @@ where $\mathbb{I}$ is an indicator variable.
 
   \item The kNN implementation \textbf{has been provided for you} in the notebook. Run the cells to plot the results for $k=\{1, 3, N-1\}$, where $N$ is the size of the dataset. Describe how the fits change with $k$. Please include your plot in your solution PDF.
 
-  \item Now, we will evaluate the quality of each model \emph{quantitatively} by computing the error on the provided test set. Write Python code to compute test MSE for each value of $k$.  Which solution has the lowest MSE? 
+  \item Now, we will evaluate the quality of each model \emph{quantitatively} by computing the error on the provided test set. Write Python code to compute the test MSE for each value of $k$.  Report the values here. Which solution has the lowest MSE? 
   
 \end{enumerate}
 
@@ -184,9 +158,9 @@ dictates how quickly the kernel decays).
     
   \item First, implement the \texttt{kernel\_regressor} function in the notebook, and plot your model for years in the range $800,000$ BC to $400,000$ BC at $1000$ year intervals for the following three values of $\tau$: $1, 50, 2500$. Since we're working in terms of thousands of years, this means you should plot $(x, f_\tau(x))$ for $x = 400, 401, \dots, 800$. \textbf{In no more than 10 lines}, describe how the fits change with $\tau$. Please include your plot in your solution PDF.
 
-  \item Denote the test set as $\mathcal{D}_\texttt{test} = \{(x'_m, y'_m)\}_{m = 1} ^M$.  Write down the expression for MSE of $f_\tau$ over the test set as a function of the training set and test set. Your answer may include $\{(x'_m, y'_m)\}_{m = 1} ^M$, $\{(x_n, y_n)\}_{n = 1} ^N$, and $K_\tau$, but not $f_\tau$.
+  \item Denote the test set as $\mathcal{D}_\texttt{test} = \{(x'_m, y'_m)\}_{m = 1} ^M$.  Write down the expression for the MSE of $f_\tau$ over the test set as a function of the training set and test set. Your answer may include $\{(x'_m, y'_m)\}_{m = 1} ^M$, $\{(x_n, y_n)\}_{n = 1} ^N$, and $K_\tau$, but not $f_\tau$.
 
-    \item Compute the MSE on the provided test set for the three values of $\tau$.  Which model yields the lowest MSE? Conceptually, why is this the case? Why would choosing $\tau$ based on $\mathcal{D}_\texttt{train}$ rather than $\mathcal{D}_\texttt{test}$ be a bad idea? 
+    \item Compute the MSE on the provided test set for the three values of $\tau$.  Report the values here. Which model yields the lowest MSE? Conceptually, why is this the case? Why would choosing $\tau$ based on $\mathcal{D}_\texttt{train}$ rather than $\mathcal{D}_\texttt{test}$ be a bad idea? 
 
   \item Describe the time and space complexity of both kernelized regression and kNN with respect to the size of the training set $N$.  How, if at all, does the size of the model---everything that needs to be stored to make predictions---change with the size of the training set $N$?  How, if at all, do the number of computations required to make a prediction for some input $x^*$ change with the size of the training set $N$?.
   
@@ -251,7 +225,7 @@ expectation taken over the joint distribution $p(x,y)$. This essentially just me
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Problem 3
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
+
 \begin{problem}[Basis Regression, 30pts]
 
  Having reviewed the theory, we now implement some linear regression models for the temperature. If we just directly use the data as given to us, we would only have
@@ -264,7 +238,7 @@ expectation taken over the joint distribution $p(x,y)$. This essentially just me
 
 \begin{enumerate}
   \item
-        We will first implement the four basis regressions below. (The first basis has been implemented for you in the notebook as an example.) Note that we introduce an addition transform $f$ (already into the provided notebook) to address concerns about numerical instabilities.
+        We will first implement the four basis regressions below. Note that we introduce an addition transform $f$ (already into the provided notebook) to address concerns about numerical instabilities.
         \begin{enumerate}
           \item $\phi_j(x)= f(x)^j$ for $j=1,\ldots, 9$. $f(x) = \frac{x}{1.81 \cdot 10^{2}}.$
           \item $\phi_j(x) = \exp\left\{-\cfrac{(f(x)-\mu_j)^2}{5}\right\}$ for $\mu_j=\frac{j + 7}{8}$ with $j=1,\ldots, 9$. $f(x) = \frac{x}{4.00 \cdot 10^{2}}.$
@@ -304,7 +278,7 @@ expectation taken over the joint distribution $p(x,y)$. This essentially just me
           bases seem to overfit?  Underfit?  Why?
 
 
-    \item Briefly describe what purpose the transforms $f$ serve: why are they helpful?
+    \item Briefly describe what purpose the transforms $\phi$ serve: why are they helpful?
 
     \item As in Problem 1, describe the space and time complexity of linear regression.  How does what is stored to compute predictions change with the size of the training set $N$ and the number of features $D$?  How does the computation needed to compute the prediction for a new input depend on the size of the training set $N$?  How do these complexities compare to those of the kNN and kernelized regressor?
 
@@ -372,7 +346,7 @@ Note that minimizing $\mathcal{L}_{lasso}(\boldw)$ is exactly what LASSO regress
         \item Repeat step (b) until convergence or the maximum number of iterations is reached.
     \end{enumerate} 
 
-    Implement the \texttt{find\_lasso\_weights} function according to the above algorithm, letting $\boldw_0$ be a vector of ones and the max number of iterations be 5000. Then, fit models with $\lambda=1, 10$ to basis (d) from Problem 3, plot the predictions, and compute the MSE's. You will need to do some preprocessing, but a completed helper function for this is already provided. How do the graphs and errors compare to those for the unregularized basis (d) model? 
+    Implement the \texttt{find\_lasso\_weights} function according to the above algorithm, letting $\boldw_0$ be a vector of ones and the max number of iterations be 5000. Then, fit models with $\lambda=1, 10$ to basis (d) from Problem 3 and plot the predictions on the train set. Finally, compute the test MSE's. You will need to do some preprocessing, but a completed helper function for this is already provided. How do the graphs and errors compare to those for the unregularized basis (d) model? 
 
 
 \end{enumerate}
@@ -384,15 +358,13 @@ Note that minimizing $\mathcal{L}_{lasso}(\boldw)$ is exactly what LASSO regress
 	Your solution here.
 \end{solution}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Name and Calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
-\subsection*{Name}
 
-\subsection*{Collaborators and Resources}
-Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
+\textbf{Name}:
 
+\textbf{Collaborators and Resources}: 
 
 \end{document}

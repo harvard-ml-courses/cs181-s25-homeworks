@@ -1,8 +1,8 @@
 \documentclass[submit]{../harvardml}
 
 \course{CS1810-S25}
-\assignment{Assignment \#3}
-\duedate{11:59pm EST, March 14th, 2025}
+\assignment{Homework \#3}
+\duedate{March 14, 2025 at 11:59 PM}
 
 \usepackage{../common}
 \usepackage[OT1]{fontenc}
@@ -24,13 +24,6 @@
     \color{blue}\noindent\textbf{Solution}:
 }{}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \excludecomment{solution} % UNCOMMENT TO HIDE SOLUTIONS
-
-% Student answer environment (used for answer templates)
-\newenvironment{answer}
-  {\section*{Solution}}
-{}
 
 \DeclareMathOperator*{\mean}{\mathbb{E}}
 
@@ -56,7 +49,7 @@
 \begin{document}
 
 \begin{center}
-  {\Large Homework 3: Bayesian Methods and Neural Networks}\\
+  {\Large Bayesian Methods and Neural Networks}\\
 \end{center}
 
 \subsection*{Introduction}
@@ -75,12 +68,9 @@ As always, please start early and come to office hours with questions!
 \subsection*{Resources and Submission Instructions}
 You may want to consider the lecture notes from Feb 18th to 27th (weeks 4 and 5).
 
-Please type your solutions after the corresponding problems using this
-\LaTeX\ template, and start each problem on a new page.
+Please type your solutions after the corresponding problems using this \LaTeX\ template, and start each problem on a new page.
 
-Please submit the \textbf{writeup PDF to the Gradescope assignment `HW3'}. Remember to assign pages for each question.  \textbf{You must include your plots in your writeup PDF. } The supplemental files will only be checked in special cases, e.g. honor code issues, etc.
-
-Please submit your \textbf{\LaTeX\ file and code files to the Gradescope assignment `HW3 - Supplemental'}. \\
+Please submit the writeup PDF to the Gradescope assignment `HW3'. Remember to assign pages for each question.  \textbf{You must include any plots in your writeup PDF. }. Please submit your \LaTeX file and code files to the Gradescope assignment `HW3 - Supplemental.' The supplemental files will only be checked in special cases, e.g. honor code issues, etc. Your files should be named in the same way as we provide them in the repository, e.g. \texttt{hw3.pdf}, etc.
 
 
 \newpage
@@ -191,7 +181,7 @@ given by
               \begin{enumerate}
                 \item How does the variance of the prior relate to the variance of the posterior?
                 \item How might you use the prior variance to encode a stronger or weaker prior belief?
-                \item How does the posterior variance change as we observe more samples $n$?
+                \item How does the posterior variance change as we observe more samples $N$?
               \end{enumerate}
       \end{enumerate}
 
@@ -201,7 +191,7 @@ given by
       \begin{enumerate}
         \item
               Write a loss function \(\ell(\theta) \in \mathbb{R}\) in terms of
-              \(\theta, y, n, \alpha, \beta\) such that minimizing \(\ell\) is
+              \(\theta, y, N, \alpha, \beta\) such that minimizing \(\ell\) is
               equivalent to calculating the MAP estimate,
               i.e.~\(\theta_{\text{MAP}} = \arg \min_{\theta} \ell(\theta)\). Your
               function should be a sum of:
@@ -215,7 +205,7 @@ given by
 
               \textbf{Hint}: Work backwards from part 1 to derive the MSE term and from the MAP in part 2 to get the regularization term. Watch out for the signs! For the interpretation, complete the square and then compare your expression with the prior mode in part 2.
         \item
-              What happens to both $\theta_{\text{post mean}}$ and $\theta_{\text{MAP}}$ as \(n \to \infty\)? Compare this to the MLE estimate.
+              What happens to both $\theta_{\text{post mean}}$ and $\theta_{\text{MAP}}$ as \(N \to \infty\)? Compare this to the MLE estimate.
               (Remember to account for the change in \(y\).)
       \end{enumerate}
 
@@ -223,95 +213,9 @@ given by
 
 \end{framed}
 
-\begin{answer}
-  \begin{enumerate}
-    \item[1.]
-      Answer:
-      \[
-        \arg \max_{\theta} \log p(Y = y \mid \theta) =
-      \]
-      Derivation:
-
-    \item[2.]
-      \begin{enumerate}
-        \item
-
-        \item
-
-              Parameters:
-              \[
-                \alpha' =
-              \]
-
-              \[
-                \beta' =
-              \]
-
-              Derivation:
-
-      \end{enumerate}
-
-    \item[3.]
-
-      \begin{enumerate}
-        \item
-
-        \item
-              \begin{align*}
-                \theta_{\text{post mean}} = \mean [\theta \mid Y = y]     & = \\
-                \theta_{\text{MAP}} =\arg \max_{\theta}p(\theta \mid Y=y) & = \\
-                \mathrm{Var}(\theta \mid Y = y)                           & =
-              \end{align*}
-
-      \end{enumerate}
-
-    \item[4.]
-
-      \begin{enumerate}
-        \item
-
-        \item
-              \begin{enumerate}
-                \item
-
-                \item
-
-                \item
-              \end{enumerate}
-
-      \end{enumerate}
-
-    \item[5.]
-
-      \begin{enumerate}
-        \item
-              MSE term:
-              \[
-                M =
-              \]
-
-              Regularization term:
-              \[
-                R =
-              \]
-
-              Loss function, as a function of the MSE and regularization term:
-              \[
-                \ell(\theta) =
-              \]
-
-              MSE term derivation:
-
-              Regularization term derivation:
-
-              Regularization term interpretation:
-
-        \item
-
-      \end{enumerate}
-
-  \end{enumerate}
-\end{answer}
+\begin{solution}
+	Your solution here.
+\end{solution}
 
 
 \newpage
@@ -413,71 +317,9 @@ where $\hat{y}$ is a scalar output of the net when passing in the single datapoi
   \end{enumerate}
 \end{framed}
 
-\begin{answer}
-  \begin{enumerate}
-    \item \begin{itemize}
-            \item $\bold{W}_1 : $
-            \item $\bold{b}_1 : $
-            \item $\bold{W}_2 : $
-            \item $\bold{b}_2 : $
-            \item $\bold{a}_1 : $
-            \item $\bold{z}_1 : $
-            \item $a_2 : $
-            \item $\hat{y} : $
-          \end{itemize}
-
-    \item \begin{enumerate}
-            \item
-                  \begin{align*}
-                    \frac {\partial L}{\partial b_2} & =
-                  \end{align*}
-
-            \item
-                  \begin{align*}
-                    \frac {\partial L}{\partial W_2^h} & =
-                  \end{align*}
-
-            \item
-                  \begin{align*}
-                    \frac {\partial L}{\partial b_1^h} & =
-                  \end{align*}
-
-            \item
-                  \begin{align*}
-                    \frac {\partial L}{\partial W_1^{h,j}} & =
-                  \end{align*}
-          \end{enumerate}
-
-    \item
-
-          \begin{enumerate}
-            \item
-                  \begin{align*}
-                    v_1        & = \\
-                    v_2        & = \\
-                    v_3        & = \\
-                    v_4        & = \\
-                    v_5        & = \\
-                    v_6        & = \\
-                    v_7        & = \\
-                    f(x_1,x_2) & = \\
-                  \end{align*}
-
-            \item
-                  \begin{align*}
-                    \frac{\partial v_1}{\partial x_1} & = \\
-                    \frac{\partial v_2}{\partial x_1} & = \\
-                    \frac{\partial v_3}{\partial x_1} & = \\
-                    \frac{\partial v_4}{\partial x_1} & = \\
-                    \frac{\partial v_5}{\partial x_1} & = \\
-                    \frac{\partial v_6}{\partial x_1} & = \\
-                    \frac{\partial v_7}{\partial x_1} & = \\
-                    \frac{\partial f}{\partial x_1}   & =
-                  \end{align*}
-          \end{enumerate}
-
-  \end{enumerate}
-\end{answer}
+\begin{solution}
+	Your solution here.
+\end{solution}
 
 
 \newpage
@@ -525,98 +367,24 @@ In this problem, you will learn how to use PyTorch. This machine learning librar
 
 \end{enumerate}
 
-{\bfseries You will recieve no points for code not included below.}
+{\bfseries You will receive no points for code not included below.}
 
-{\bfseries You will recieve no points for code using built-in APIs from the \verb|torch.nn| library.}
+{\bfseries You will receive no points for code using built-in APIs from the \verb|torch.nn| library.}
 
 \end{problem}
 
 
-\begin{answer}
+\begin{solution}
+	Your solution here.
+\end{solution}
 
-  \begin{enumerate}
-    \item[1.]
-
-      Plot:
-
-      Code:
-
-      \begin{lstlisting}[language=Python]
-n_inputs = 'not implemented'
-n_hiddens = 'not implemented'
-n_outputs = 'not implemented'
-
-W1 = 'not implemented'
-b1 = 'not implemented'
-W2 = 'not implemented'
-b2 = 'not implemented'
-
-
-
-def relu(x):
-  pass
-
-
-
-def softmax(x):
-  pass
-
-
-
-def net(X):
-  pass
-
-
-
-def cross_entropy(y_hat, y):
-  pass
-
-
-
-def sgd(params, lr=0.1):
-  pass
-
-
-
-def train(net, params, train_iter, loss_func=cross_entropy, updater=sgd):
-  pass
-
-\end{lstlisting}
-
-    \item[2.]
-
-    \item[3.]
-
-      Test Accuracy (In Distribution):
-
-      Test Accuracy (Out of Distribution):
-
-      Discussion:
-
-    \item[4.]
-
-    \item[5.]
-
-      \begin{enumerate}
-        \item
-        \item
-        \item
-      \end{enumerate}
-
-
-  \end{enumerate}
-
-\end{answer}
-
-
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Name and Calibration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\subsection*{Name}
 
-\subsection*{Collaborators and Resources}
-Whom did you work with, and did you use any resources beyond cs181-textbook and your notes?
+\textbf{Name}:
 
+\textbf{Collaborators and Resources}: 
 
 \end{document}
